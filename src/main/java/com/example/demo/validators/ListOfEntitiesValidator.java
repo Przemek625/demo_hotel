@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.DataBinder;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.WebDataBinder;
 
 import javax.validation.Validator;
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ public class ListOfEntitiesValidator<E> {
         List<List<FieldError>> errorList = new ArrayList<>();
 
         for (E e : target) {
-            DataBinder binder = new DataBinder(e);
+            WebDataBinder binder = new WebDataBinder(e);
             binder.setValidator((org.springframework.validation.Validator) this.validator);
             binder.addValidators(eventValidator);
             binder.validate();
