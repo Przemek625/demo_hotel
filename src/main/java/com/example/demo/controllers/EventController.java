@@ -87,7 +87,7 @@ public class EventController {
         }
         catch (EntityNotFoundException e){
             return new ResponseEntity<>(
-                    new Message(MessageType.ERROR, "There is no Event with id=1"), HttpStatus.BAD_REQUEST
+                    new Message(MessageType.ERROR, "There is no event with id=" + id), HttpStatus.BAD_REQUEST
             );
         }
 
