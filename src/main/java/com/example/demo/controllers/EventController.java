@@ -8,9 +8,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import com.example.demo.domain.Event;
+
 import java.util.List;
 
 import org.slf4j.LoggerFactory;
+
+import javax.persistence.EntityNotFoundException;
 
 
 @RestController()
@@ -27,13 +30,39 @@ public class EventController {
         this.listOfEventValidator = listOfEventValidator;
     }
 
-
+    /**
+     * Example body:
+     *[
+     *    {
+     * 		"name": "Event1",
+     * 		"eventType": "BUSINESS_DINNER",
+     * 		"seats": 100,
+     * 		"attractionList": [
+     *            {"name": "Free Bear"},
+     *            {"name": "Free Coffee"},
+     *            {"name": "Free Water"}
+     * 			]
+     *    },
+     *    {"name": "Event2", "eventType": "BUSINESS_DINNER", "seats": 100},
+     *    {"name": "Event3", "eventType": "BUSINESS_DINNER", "seats": 100}
+     * ]
+     * @param eventList
+     * @return ResponseEntity
+     */
     @PostMapping()
     public ResponseEntity create(@RequestBody List<Event> eventList) {
 
         List<List<FieldError>> listOfErrors = listOfEventValidator.validate(eventList);
 
-        if (!listOfEventValidator.hasErrors(listOfErrors)){
+//        TODO put it into service in the future.
+//        TODO try it with java streams?.
+        if (!listOfEventValidator.hasErrors(listOfErrors)) {
+            eventList.forEach(event -> {
+                event.getAttractionList().forEach(
+                        attraction -> {
+                            attraction.setEvent(event);
+                        });
+            });
             eventRepository.saveAll(eventList);
             return new ResponseEntity<>(eventList, HttpStatus.OK);
         }
@@ -42,7 +71,25 @@ public class EventController {
     }
 
     @GetMapping()
-    public ResponseEntity get(){
+    public ResponseEntity get() {
         return new ResponseEntity<>(eventRepository.findAll(), HttpStatus.OK);
+    }
+
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity delete(@PathVariable Long id) {
+
+        Event event;
+        try {
+            event = eventRepository.getOne(id);
+            System.out.println(event);
+        }
+        catch (EntityNotFoundException e){
+            return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
+        }
+
+        eventRepository.deleteById(id);
+        return new ResponseEntity<>("", HttpStatus.OK);
+
     }
 }
