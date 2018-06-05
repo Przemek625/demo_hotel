@@ -1,6 +1,7 @@
 package com.example.demo.controllers;
 
 import com.example.demo.repositories.EventRepository;
+import com.example.demo.utilities.Enums.MessageType;
 import com.example.demo.validators.ListOfEntitiesValidator;
 import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
@@ -8,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import com.example.demo.domain.Event;
-
+import com.example.demo.utilities.Message;
 import java.util.List;
 
 import org.slf4j.LoggerFactory;
@@ -77,7 +78,7 @@ public class EventController {
 
 
     @DeleteMapping("/{id}")
-    public ResponseEntity delete(@PathVariable Long id) {
+    public ResponseEntity<Message> delete(@PathVariable Long id) {
 
         Event event;
         try {
@@ -85,11 +86,15 @@ public class EventController {
             System.out.println(event);
         }
         catch (EntityNotFoundException e){
-            return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(
+                    new Message(MessageType.ERROR, "There is no Event with id=1"), HttpStatus.BAD_REQUEST
+            );
         }
 
         eventRepository.deleteById(id);
-        return new ResponseEntity<>("", HttpStatus.OK);
+        return new ResponseEntity<>(
+                new Message(MessageType.INFO, "You have deleted object " + event.toString()), HttpStatus.OK
+                );
 
     }
 }
