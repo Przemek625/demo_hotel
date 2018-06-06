@@ -8,13 +8,30 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 
+import javax.sql.DataSource;
+
+/**
+ * Important articles for implementing Spring security:
+ *
+ * https://spring.io/guides/topicals/spring-security-architecture/
+ * https://stackoverflow.com/questions/44671457/what-is-the-use-of-enablewebsecurity-in-spring
+ * https://projects.spring.io/spring-security-oauth/docs/Home.html
+ * https://projects.spring.io/spring-security-oauth/docs/oauth2.html
+ *
+ *
+ * If you define a @Configuration with @EnableWebSecurity anywhere in your application it will switch off the default
+ * webapp security settings in Spring Boot (but leave the Actuator’s security enabled).
+ *
+ *
+ */
 @Configuration
 @EnableAuthorizationServer
 public class AuthServerOAuth2Config extends AuthorizationServerConfigurerAdapter {
 
     private static final String CLIEN_ID = "devglan-client";
-    static final String CLIENT_SECRET = "$2a$04$e/c1/RfsWuThaWFCrcCuJeoyvwCV0URN/6Pn9ZFlrtIWaU/vj/BfG";
+    private static final String CLIENT_SECRET = "$2a$04$e/c1/RfsWuThaWFCrcCuJeoyvwCV0URN/6Pn9ZFlrtIWaU/vj/BfG";
     private static final String GRANT_TYPE_PASSWORD = "password";
     private static final String AUTHORIZATION_CODE = "authorization_code";
     private static final String REFRESH_TOKEN = "refresh_token";
@@ -39,7 +56,7 @@ public class AuthServerOAuth2Config extends AuthorizationServerConfigurerAdapter
                 .inMemory()
                 .withClient(CLIEN_ID)
                 .secret(CLIENT_SECRET)
-                .authorizedGrantTypes(GRANT_TYPE_PASSWORD, AUTHORIZATION_CODE, REFRESH_TOKEN, IMPLICIT )
+                .authorizedGrantTypes(GRANT_TYPE_PASSWORD, AUTHORIZATION_CODE, REFRESH_TOKEN, IMPLICIT)
                 .scopes(SCOPE_READ, SCOPE_WRITE, TRUST)
                 .accessTokenValiditySeconds(ACCESS_TOKEN_VALIDITY_SECONDS).
                 refreshTokenValiditySeconds(FREFRESH_TOKEN_VALIDITY_SECONDS);
