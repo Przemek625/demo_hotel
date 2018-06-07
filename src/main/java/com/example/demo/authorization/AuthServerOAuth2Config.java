@@ -15,12 +15,14 @@ import javax.sql.DataSource;
 /**
  * Important articles for implementing Spring security:
  *
+ * https://tools.ietf.org/html/rfc6749
  * https://spring.io/guides/topicals/spring-security-architecture/
  * https://stackoverflow.com/questions/44671457/what-is-the-use-of-enablewebsecurity-in-spring
  * https://projects.spring.io/spring-security-oauth/docs/Home.html
  * https://projects.spring.io/spring-security-oauth/docs/oauth2.html
  * https://www.oauth.com/oauth2-servers/the-resource-server/
  *
+ * https://piotrminkowski.wordpress.com/tag/spring-security/
  *
  *
  * If you define a @Configuration with @EnableWebSecurity anywhere in your application it will switch off the default
