@@ -101,6 +101,7 @@ public class EventController {
 
     //TODO handle situation where no id where given.
 //    https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/PUT
+//    Send status 201 or 200.
     @PutMapping("/{id}")
     public ResponseEntity putUpdate(
             @PathVariable Long id, @RequestBody Event updatedEvent, BindingResult bindingResult) {
