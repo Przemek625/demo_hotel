@@ -1,6 +1,7 @@
 package com.example.demo.controllers;
 
 import com.example.demo.repositories.EventRepository;
+import com.example.demo.services.EventService;
 import com.example.demo.utilities.Enums.MessageType;
 import com.example.demo.validators.ListOfEntitiesValidator;
 import org.slf4j.Logger;
@@ -13,6 +14,7 @@ import com.example.demo.domain.Event;
 import com.example.demo.utilities.Message;
 
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.LoggerFactory;
 
@@ -27,13 +29,17 @@ public class EventController {
 
     private EventRepository eventRepository;
     private ListOfEntitiesValidator<Event> listOfEventValidator;
+    private EventService eventService;
 
-    public EventController(EventRepository eventRepository, ListOfEntitiesValidator<Event> listOfEventValidator) {
+    public EventController(EventRepository eventRepository, ListOfEntitiesValidator<Event> listOfEventValidator,
+                           EventService eventService) {
         this.eventRepository = eventRepository;
         this.listOfEventValidator = listOfEventValidator;
+        this.eventService = eventService;
     }
 
     /**
+     * http://127.0.0.1:8080/events/?access_token=30a6a5df-68f5-4179-8db2-f5622fadacf1
      * Example body:
      * [
      * {
@@ -133,4 +139,14 @@ public class EventController {
 
         return new ResponseEntity<>(bindingResult.getFieldErrors(), HttpStatus.BAD_REQUEST);
     }
+
+    //  http://www.baeldung.com/http-put-patch-difference-spring
+    @PatchMapping("/{id}")
+    public ResponseEntity<Event> patchUpdate(@RequestBody Map<String, Object> updates, @PathVariable Long id) {
+
+        Event event = eventService.update(id, updates);
+        return new ResponseEntity<>(event, HttpStatus.OK);
+
+    }
+
 }
