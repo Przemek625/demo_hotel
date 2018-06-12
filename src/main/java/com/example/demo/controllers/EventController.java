@@ -140,12 +140,20 @@ public class EventController {
         return new ResponseEntity<>(bindingResult.getFieldErrors(), HttpStatus.BAD_REQUEST);
     }
 
+    //    TODO return updated entity and handle
     //  http://www.baeldung.com/http-put-patch-difference-spring
+    //    {
+    //    "timestamp": "2018-06-12T12:23:35.191+0000",
+    //    "status": 500,
+    //    "error": "Internal Server Error",
+    //    "message": "Type definition error: [simple type, class org.hibernate.proxy.pojo.javassist.JavassistLazyInitializer]; nested exception is com.fasterxml.jackson.databind.exc.InvalidDefinitionException: No serializer found for class org.hibernate.proxy.pojo.javassist.JavassistLazyInitializer and no properties discovered to create BeanSerializer (to avoid exception, disable SerializationFeature.FAIL_ON_EMPTY_BEANS) (through reference chain: com.example.demo.domain.Event_$$_jvst33_3[\"handler\"])",
+    //    "path": "/events/1/"
+    //}
     @PatchMapping("/{id}")
-    public ResponseEntity<Event> patchUpdate(@RequestBody Map<String, Object> updates, @PathVariable Long id) {
+    public ResponseEntity patchUpdate(@RequestBody Map<String, Object> updates, @PathVariable Long id) {
 
         Event event = eventService.update(id, updates);
-        return new ResponseEntity<>(event, HttpStatus.OK);
+        return new ResponseEntity<>("You have successfully updated resource.", HttpStatus.OK);
 
     }
 
