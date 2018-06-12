@@ -25,25 +25,31 @@ public class EventService{
 //        https://stackoverflow.com/questions/4234985/how-to-for-each-the-hashmap
 //        https://kobietydokodu.pl/projekt-bilet-3-konfigurujemy-spring-security-oraz-oauth/
 //        https://stackoverflow.com/questions/18044978/java-get-property-value-by-property-name
-        for (Map.Entry<String, Object> property: updates.entrySet()) {
-
-            try {
-                BeanUtils.setProperty(event, property.getKey(), property.getValue());
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            }
-
+//        https://medium.com/kodgemisi/spring-data-jpa-partial-update-782db3734ba
+//        for (Map.Entry<String, Object> property: updates.entrySet()) {
+//
+//            try {
+//                BeanUtils.setProperty(event, property.getKey(), property.getValue());
+//            } catch (IllegalAccessException e) {
+//                e.printStackTrace();
+//            } catch (InvocationTargetException e) {
+//                e.printStackTrace();
+//            }
+//
+//        }
+//      https://edwin.baculsoft.com/2013/03/java-how-to-map-properties-from-hashmap-to-java-bean/
+        try {
+            BeanUtils.populate(event, updates);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
         }
+
         System.out.println(event.toString());
         
         eventRepository.save(event);
 
         return event;
-
-
     }
-
-
 }

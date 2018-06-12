@@ -23,7 +23,8 @@ import javax.sql.DataSource;
  * https://www.oauth.com/oauth2-servers/the-resource-server/
  *
  * https://piotrminkowski.wordpress.com/tag/spring-security/
- *
+ * http://websystique.com/spring-security/secure-spring-rest-api-using-oauth2/
+ * https://kobietydokodu.pl/projekt-bilet-3-konfigurujemy-spring-security-oraz-oauth/
  *
  * If you define a @Configuration with @EnableWebSecurity anywhere in your application it will switch off the default
  * webapp security settings in Spring Boot (but leave the Actuator’s security enabled).
