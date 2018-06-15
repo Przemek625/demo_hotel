@@ -3,6 +3,7 @@ package com.example.demo.repositories;
 import com.example.demo.domain.Event;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 public interface EventRepository extends JpaRepository<Event, Long> {
